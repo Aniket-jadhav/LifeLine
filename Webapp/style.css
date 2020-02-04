@@ -1,0 +1,9 @@
+.main {
+  height: 500px;
+}
+.bg {
+  background-image: url('bg.jpg');
+  background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: 100% 100%;
+}

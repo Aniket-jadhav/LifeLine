@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NextHospital</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> <!-- Delete ka theywch karan 2 2 jquery -->
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" crossorigin="anonymous"/>
+    <script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={
+            'modules':[{
+              'name':'visualization',
+              'version':'1',
+              'packages':['corechart']
+            }]
+          }"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+
+
+  <body >
+    <nav class="navbar navbar-expand-md bg-danger navbar-dark">
+      <a class="navbar-brand" href="index.html"><i class="fas fa-ambulance" style="font-size: 1.2em;"></i> NextHospital</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="nchs.html" class="nav-link active">Causes Of Death</a>
+          </li>
+          <li class="nav-item">
+            <a href="hospital.html" class="nav-link">Visualization of Hospital Dataset</a>
+          </li>
+          <li class="nav-item">
+            <a href="city.html" class="nav-link">Search HealtCare Service</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- PAGE STARTS HERE -->
+    <div class="jumbotron jumbotron-fluid mb-0">
+      <div class="container">
+        <h1>Data analysis of Reasons behind the death and number of deaths in each states</h1>      
+        <p>Bar chart shows top five causes of death and below pie chart shows state wise death count </p>
+      </div>
+    </div>
+   
+    <div class="container mb-5">
+      <font face="Arial"> 
+          <select id="ddlViewByYear", max-width:90% onchange="myFunctionForYear()">
+              <option value="2010" selected='true'>2010</option>
+              <option value="2011" >2011</option>
+              <option value="2012" >2012</option>
+              <option value="2012" >2013</option>
+              <option value="2013" >2014</option>
+              <option value="2015" >2015</option>
+            
+          </select>
+    
+        <div id="graphBar" style=" height: 900px; width: 110%;"></div>
+
+        <select id="ddlViewBy" onchange="myFunction()">
+          <option value="Heart Disease">Heart Disease</option>
+          <option value="Unintentional Injury" >Unintentional Injury</option>
+          <option value="Stroke">Stroke</option>
+          <option value="Cancer">Cancer</option>
+          <option value="Chronic Lower Respiratory Disease">Chronic Lower Respiratory Disease</option>
+        </select>
+
+
+         <div id="graphPiechart" style=" height: 900px; width: 110%;"></div>   	 
+       </font>
+    </div>
+    
+    <!-- PAGE ENDS HERE -->
+  
+  
+  
+    <!-- EXTRA PADDING TO SEPERATE FOOTER FROM BODY -->
+    <!-- <div class="div my-5">&nbsp;</div>
+    <div class="div my-5">&nbsp;</div>
+    <div class="div my-5">&nbsp;</div> -->
+  
+    <!-- FOOTER -->
+    <div class="container-fluid bg-dark text-white">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-sm-2"><img class="img-fluid img-thumbnail" src="akshay.jpg" width="200" height="345"></div>
+          <div class="col-sm-3">
+              <p>Name : Akshay Abhang</p>
+              <p>Email Id : <a href="mailto:axa190013@utdlaas.edu?Subject=Hello%20again" target="_top">axa190013@utdlaas.edu</a></p>
+          </div>
+          <div class="col-sm-2"></div>
+          <div class="col-sm-2"><img class="img-fluid img-thumbnail" src="Aniket.jpg" width="200" height="345"></div>
+          <div class="col-sm-3">
+			<p>Name : Aniket Jadhav</p>
+			<p>Email Id : <a href="mailto:asj18005@utdlaas.edu?Subject=Hello" target="_top">asj18005@utdlaas.edu</a></p>
+          </div>
+          
+        </div>
+        <div class="text-center pt-5">
+          <p>The University of Texas at Dallas</p>
+          <p>800 W. Campbell Road, Richardson, Texas 75080-3021</p>
+          <p>972-883-2111</p>
+          <hr class="bg-white" width="100%">
+          <p>© The University of Texas at Dallas</p>
+        </div>
+      </div>
+    </div>             
+  </body>
+
+
+
+  <script type="text/javascript">
+    window.onload =function() {
+      Visualize();
+    }
+      function Visualize() {
+        VisualizeGraphBar(2010);
+        VisualizeGraphPie(2010,"Stroke")
+      }
+
+
+
+function VisualizeGraphPie(ex,year) {
+
+ 
+  //var ex = "Heart Disease";
+
+var url = 'http://localhost:3030/myDataset/query';
+var query = `prefix raw: <https://github.com/timrdf/csv2rdf4lod-automation/wiki/CSV2RDF4LOD_BASE_URI#/source///dataset/home/vocab/raw/> 
+            SELECT ?state (count(?subject) as ?death_count) 
+            WHERE { ?subject raw:cause_of_death \"${ex}\" . 
+            ?subject raw:year  \"${year}\".
+            ?subject raw:percent_potentially_excess_deaths ?death. ?subject raw:state ?state FILTER (?death >= '50%')} GROUP BY ?state`
+
+
+$.ajax({
+    async: false,
+    global: false,
+    crossDomain: true,
+    dataType: 'jsonp',
+    url: encodeURI(url),
+    type: 'POST',
+    data: { query : query },
+  
+    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    success: function (data) {
+      
+          var bar_data_table = new google.visualization.DataTable();
+          bar_data_table.addColumn('string', 'state');
+          bar_data_table.addColumn('number', 'death_count');
+            
+          var bindings = data.results.bindings; 
+          for (var i in bindings) {
+              var result = data.results.bindings[i];  
+              var  firstValue = result.state.value;   
+              var secondValue=  parseInt(result.death_count.value);
+              console.log(firstValue,secondValue);
+
+              var resultTupple = [firstValue,secondValue];
+              bar_data_table.addRow(resultTupple);
+          }
+          var dataConfiguration = { 
+              title: 'Death Count in Different States' ,
+              titleTextStyle : {color : 'red', fontSize: '35',fontName:'Arial',bold:false},
+              is3D : true 
+          };
+      
+          var VisualizePieChart = new google.visualization.PieChart(document.getElementById('graphPiechart'));
+          VisualizePieChart.draw(bar_data_table, dataConfiguration);
+                
+    },
+    error: function (data) {
+    }
+  });
+
+}
+
+
+
+
+
+
+
+     function VisualizeGraphBar(year) {
+
+      var url = 'http://localhost:3030/myDataset/query';
+	    var query = `prefix raw: <https://github.com/timrdf/csv2rdf4lod-automation/wiki/CSV2RDF4LOD_BASE_URI#/source///dataset/home/vocab/raw/> 
+                    SELECT ?cause_of_death (COUNT(?cause_of_death) as ?death_count) WHERE {  ?subject raw:cause_of_death ?cause_of_death .
+                     ?subject raw:percent_potentially_excess_deaths ?death. 
+                     ?subject raw:year  \"${year}\".
+                     FILTER (?death >= '50%') } GROUP BY ?cause_of_death`
+
+
+		 $.ajax({
+      async: false,
+					global: false,
+					url: encodeURI(url),
+					type: 'POST',
+					data: { query : query },
+          crossDomain: true,
+          dataType: 'jsonp',
+					contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+					success: function (data) {
+						    var table_data = new google.visualization.DataTable();
+                table_data.addColumn('string', 'cause_of_death');
+                table_data.addColumn('number', 'death_count');
+                  
+                var bindings = data.results.bindings; 
+
+
+                // iterate over result data sets
+
+                for (var i in bindings) {
+                    var result = data.results.bindings[i];  
+                    var  firstValue = result.cause_of_death.value;   
+                    var secondValue=  parseInt(result.death_count.value);
+
+                    var resultTupple = [firstValue,secondValue];
+                    table_data.addRow(resultTupple);
+                }
+                var dataConfiguration = { 
+                    colors: ['#FF4020'],
+                    titleTextStyle : {color : 'red', fontSize: '38',fontName:'Arial',bold:false},
+                    title: 'Reasons of Deaths in United States' ,
+                };
+            
+                var VisualizeBar = new google.visualization.BarChart(document.getElementById('graphBar'));
+
+
+                VisualizeBar.draw(table_data, dataConfiguration);
+                      
+					},
+					error: function (data) {
+					}
+				});
+
+
+        var e = document.getElementById("ddlViewBy");
+        var ex = e.options[e.selectedIndex].value;
+	 
+    }
+
+    function myFunction() {
+  var x = document.getElementById("ddlViewBy").value;
+  var y = document.getElementById("ddlViewByYear").value;
+console.log(x,"==",y);
+  VisualizeGraphPie(x,y);
+  
+}
+
+
+function myFunctionForYear() {
+  var x = document.getElementById("ddlViewBy").value;
+
+  var y = document.getElementById("ddlViewByYear").value;
+  VisualizeGraphBar(y);
+  VisualizeGraphPie(x,y);
+
+  
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>NextHospital</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script> <!-- Delete ka theywch karan 2 2 jquery -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md bg-danger navbar-dark">
+    <a class="navbar-brand" href="index.html"><i class="fas fa-ambulance" style="font-size: 1.2em;"></i>
+      NextHospital</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="nchs.html" class="nav-link">Causes Of Death</a>
+        </li>
+        <li class="nav-item">
+          <a href="hospital.html" class="nav-link">Visualization of Hospital Dataset</a>
+        </li>
+        <li class="nav-item">
+          <a href="city.html" class="nav-link active">Search HealtCare Service</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- PAGE STARTS HERE -->
+  <div class="jumbotron jumbotron-fluid mb-0">
+    <div class="container">
+      <h1>Nearby Hospitals</h1>
+      <p>The map below shows the people in United States according to the census data. These are the people who are suffering from disease and looking for best nearby healthcare service.</p>
+	  <p>The motivation is to find the nearest and best health care service so that user can get medical assistance as soon as possible in best manner.</p>
+    </div>
+  </div>
+
+  <div class="container mb-5">
+    <font face="calibri">
+      <br>
+      <br>
+      <h1 style="text-align:center; color:red" class="mt-3">People Count According to States</h1>
+      <div id="geochart_material" style="width: 1300px; height: 800px;"></div>
+      <h1 style="text-align:center; color:red" class="mt-3">Click On People Icon to get the information of HealtCare services</h1>
+      <div id="map_material" style="width: 100%; height: 800px;">
+        <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3E4BzlVFK6CUCZwccZZ7uikjIKeuJ33k&libraries=geometry">
+          </script>
+      </div>
+
+      <table border="1" id="myTable">
+        <tr>
+          <td>Hospital Name</td>
+          <td>Distance from your Location</td>
+          <td>Converted Rating</td>
+          <td>Phone number</td>
+          <td>Speciality</td>
+        </tr>
+      </table>
+
+  </div>
+  </font>
+  </div>
+  <!-- PAGE ENDS HERE -->
+
+
+
+  <!-- EXTRA PADDING TO SEPERATE FOOTER FROM BODY -->
+  <!-- <div class="div my-5">&nbsp;</div>
+	<div class="div my-5">&nbsp;</div>
+	<div class="div my-5">&nbsp;</div> -->
+
+  <!-- FOOTER -->
+  <div class="container-fluid bg-dark text-white">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-sm-2"><img class="img-fluid img-thumbnail" src="akshay.jpg" width="200" height="345"></div>
+        <div class="col-sm-3">
+          <p>Name : Akshay Abhang</p>
+          <p>Email Id : <a href="mailto:axa190013@utdlaas.edu?Subject=Hello%20again"
+              target="_top">axa190013@utdlaas.edu</a></p>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"><img class="img-fluid img-thumbnail" src="Aniket.jpg" width="200"
+            height="345"></div>
+        <div class="col-sm-3">
+			<p>Name : Aniket Jadhav</p>
+			<p>Email Id : <a href="mailto:asj18005@utdlaas.edu?Subject=Hello" target="_top">asj18005@utdlaas.edu</a></p>
+        </div>
+
+      </div>
+      <div class="text-center pt-5">
+        <p>The University of Texas at Dallas</p>
+        <p>800 W. Campbell Road, Richardson, Texas 75080-3021</p>
+        <p>972-883-2111</p>
+        <hr class="bg-white" width="100%">
+        <p>© The University of Texas at Dallas</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+
+
+  <script type="text/javascript">
+
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', { 'packages': ['corechart', 'geoChart', 'map'], 'mapsApiKey': 'AIzaSyB3E4BzlVFK6CUCZwccZZ7uikjIKeuJ33k', 'callback': drawChart });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+    window.onload = function () {
+      drawChart();
+    }
+    function drawChart() {
+      drawGeoChart();
+    }
+
+    function drawGeoChart() {
+      //runing on city dataset
+      var url = 'http://localhost:3030/myDataset/query';
+      var query = `PREFIX  raw:<https://data.medicare.gov/resource/xubh-q36u/> 
+                   SELECT  ?state (COUNT (?state) as ?no_of_users) WHERE {  
+                   ?s raw:state ?state . } GROUP BY ?state order by desc(?no_of_users)`
+      /*var query = "  PREFIX  raw:<https://chronicdata.cdc.gov/resource/_6vp6-wxuq/>  SELECT  ?state (COUNT (?state) as ?no_of_users) WHERE {  ?s raw:stateabbr ?state . ?s raw:year '2015'  } GROUP BY ?state order by desc(?no_of_users)"*/
+
+      /*var query="prefix raw:<https://data.cdc.gov/resource/vdpk-qzpr/> SELECT ?cause_of_death (COUNT(?cause_of_death) as ?death_count) WHERE {  ?subject raw:cause_of_death ?cause_of_death . ?subject raw:percent_potentially_excess_deaths ?death. FILTER (?death >= '50%') } GROUP BY ?cause_of_death"*/
+      $.ajax({
+        async: true,
+        global: false,
+        url: encodeURI(url),
+        type: 'POST',
+        data: { query: query },
+        crossDomain: true,
+        dataType: 'jsonp',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function (data) {
+
+          // create new data 
+          var table_data = new google.visualization.DataTable();
+          table_data.addColumn('string', 'state');
+          table_data.addColumn('number', 'no_of_users');
+
+          var rows = data.results.bindings.length;
+          //alert('rows' + rows);
+          for (var i = 0; i < rows; i++) {
+            var state = "US-" + data.results.bindings[i].state.value;
+            var no_of_users = data.results.bindings[i].no_of_users.value;
+            table_data.addRow([state, Number(no_of_users)]);
+          }
+
+          //Drawing a BarChart
+          var options = {};
+          options['region'] = 'US';
+          options['dataMode'] = 'regions';
+          options['resolution'] = 'provinces';
+          options['enableRegionInteractivity'] = true;
+          options['colors']='#009FDB';
+
+
+
+          var geoChart = new google.visualization.GeoChart(document.getElementById('geochart_material'));
+          geoChart.draw(table_data, options);
+          //google.visualization.events.addListener(geoChart, 'ready', function(){
+
+          google.visualization.events.addListener(geoChart, 'regionClick', (e) => {
+            //console.log('qwerty',e.region)
+            hospitalsInStateOf(e);
+          });
+        },
+        error: function (data) {
+          console.log(JSON.stringify(data));
+        }
+      });
+
+    }
+
+  
+
+    function hospitalsInStateOf(e) {
+      console.log("e value", e.region);
+      var state = e.region.split("-")[1]
+      console.log("state", state);
+      var url = 'http://localhost:3030/myDataset/query';
+
+
+
+      var query = `prefix raw:<https://data.medicare.gov/resource/xubh-q36u/>  
+    prefix geo:<http://www.w3.org/2003/01/geo/wgs84_pos#>  
+    SELECT  ?latitude ?longitude ?subject WHERE {  
+    	?subject raw:state  \"${state}\".   	
+    	?subject raw:location ?l.  	
+    	?l geo:lat ?latitude.  	
+    	?l geo:long ?longitude.    
+    	FILTER (?latitude != '') FILTER (?longitude != '')}`
+      console.log("Loka aali");
+      $.ajax({
+        async: true,
+        global: false,
+        url: encodeURI(url),
+        type: 'POST',
+        data: { query: query },
+        crossDomain: true,
+        dataType: 'jsonp',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function (data) {
+
+          var rows = data.results.bindings.length;
+          console.log("PRitning bindings")
+          console.log(data.results.bindings)
+          var map = new google.maps.Map(document.getElementById('map_material'), {
+            zoom: 13,
+            center: new google.maps.LatLng(data.results.bindings[0].latitude.value, data.results.bindings[0].longitude.value),
+            //center:  new google.maps.LatLng(32.45465109,-99.73830437),              
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+
+          var infowindow = new google.maps.InfoWindow({});
+
+          var marker, i;
+
+          for (i = 0; i < rows; i++) {
+           
+
+
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(data.results.bindings[i].latitude.value, data.results.bindings[i].longitude.value),
+              map: map,
+              icon: 'https://png.icons8.com/ios/50/000000/men-age-group-4-filled.png'
+            }
+            );
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+              return function () {
+                console.log("In click event")
+                infowindow.setContent(data.results.bindings[i].subject.value);
+                infowindow.open(map, marker);
+                console.log("In after event")
+
+                console.log("state", state)
+                var url = 'http://localhost:3030/myDataset/query';
+
+
+                var query = `PREFIX raw:<https://data.medicare.gov/resource/yv7e-xc69/> 
+                              prefix geo:<http://www.w3.org/2003/01/geo/wgs84_pos#>  
+                              SELECT DISTINCT (?hospital_name1 as ?hospital_name) ?latitude ?longitude ?score ?phone_number ?condition WHERE {  
+                              ?subject raw:hospital_name ?hospital_name1.
+                              ?subject raw:state \"${state}\".   
+                              ?subject raw:city ?city .
+                              ?subject raw:score ?score.
+                              ?subject raw:condition ?condition.
+                              ?subject raw:phone_number ?phone_number.
+                              ?subject raw:location ?l.  
+                              ?l geo:lat ?latitude. ?l geo:long ?longitude.  FILTER (?latitude != '') FILTER (?longitude != '')}`;
+
+                console.log(query)
+                var hospitalData;
+                $.ajax({
+                  async: true,
+                  global: false,
+                  url: encodeURI(url),
+                  type: 'POST',
+                  data: { query: query },
+                  crossDomain: true,
+                  dataType: 'jsonp',
+                  contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                  success: function (temp_data) {
+                    console.log("temp_data", temp_data)
+                    nearbyHospital(data.results.bindings[i].latitude.value, data.results.bindings[i].longitude.value, temp_data)
+                    //return hospitalData
+                  },
+                  error: function (data) {
+                    console.log(JSON.stringify(data));
+                  }
+                });
+
+
+                function nearbyHospital(lat, long,  all_locations) {
+                  var table = document.getElementById("myTable");
+                  table.innerHTML="";
+                  var row = table.insertRow(0);
+                  var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+
+                        cell1.innerHTML = "Hospital Name";
+                        cell2.innerHTML = "Distance from your Location";
+                        cell3.innerHTML = "Converted Rating";
+                        cell4.innerHTML = "Phone Number";
+                        cell5.innerHTML = "Speciality";
+
+                  var radius_circle = null;
+                  var markers_on_map = [];
+                  var markers_on_map_modified_map = [];
+
+                  var i;
+                  var radius_km = 100
+                 
+                  if (radius_circle) {
+                    radius_circle.setMap(null);
+                    radius_circle = null;
+                  }
+                  for (i = 0; i < markers_on_map.length; i++) {
+                    if (markers_on_map[i]) {
+                      markers_on_map[i].setMap(null);
+                      markers_on_map[i] = null;
+                    }
+                  }
+
+                  var address_lat_lng = new google.maps.LatLng(lat, long);
+                  console.log("address_lat_lng", address_lat_lng)
+                  radius_circle = new google.maps.Circle({
+                    center: address_lat_lng,
+                    radius: radius_km * 1000,
+                    clickable: false,
+                    map: map
+                  });
+
+                  if (radius_circle) map.fitBounds(radius_circle.getBounds());
+
+
+
+
+                  var all_locations_data = all_locations.results.bindings
+                  console.log("all_locations_data", all_locations_data)
+
+                  
+                  var ar =[];
+                  var v =[];
+                  var a=0;
+
+                  
+                  var infowindow1 = new google.maps.InfoWindow({});
+                  for (var j = 0; j < all_locations_data.length; j++) {
+                    (function (location) {
+                      var marker_lat_lng = new google.maps.LatLng(all_locations_data[j].latitude.value, all_locations_data[j].longitude.value);
+                      var distance_from_location = google.maps.geometry.spherical.computeDistanceBetween(address_lat_lng, marker_lat_lng); //distance in meters between your location and the marker
+                      var score = all_locations_data[j].score.value;
+                      var phoneNumber = all_locations_data[j].phone_number.value;
+                      var condition = all_locations_data[j].condition.value;
+
+                      if (distance_from_location <= radius_km * 1000) {
+                        
+                        var rat=score;
+                        if((score>10))
+                          rat = (score/20).toFixed(2);
+                        else if ((score>5))
+                          rat = (score/2).toFixed(2);
+
+                        var x = ((100-(distance_from_location / 1000.00).toFixed(2))*10+rat*100);
+                        var inner={name: all_locations_data[j].hospital_name.value, dist: (distance_from_location / 1000.00).toFixed(2), rating: rat, phone: phoneNumber,Speciality:condition}
+                        // var obj = { x : inner};
+                        
+                        var o = { weight:x , info: inner};
+                        ar[a] = o;
+                        a++;
+
+
+
+
+                        //
+                        console.log("distance_from_location", distance_from_location)
+                        var new_marker = new google.maps.Marker({
+                          position: marker_lat_lng,
+                          map: map,
+                          title: all_locations_data[j].hospital_name.value,
+                          score: all_locations_data[j].score,
+                          icon: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
+                        });
+
+
+
+                        google.maps.event.addListener(new_marker, 'click', function () {
+                          distance_kms = (distance_from_location / 1000.00).toFixed(2);
+                          infowindow1.setContent("Hospital " + new_marker.title + " is " + distance_kms + " kms away from the selected location with rating "+ new_marker.score.value);
+                          infowindow1.open(map, new_marker);
+                        });
+                        markers_on_map.push(new_marker);
+
+
+
+
+                      }
+                    })(all_locations_data[j]);
+                  }
+
+
+                  ar.sort((a, b) => (a.weight > b.weight) ? 1 : -1)
+                  console.log(" Arrrrrrrrrrrr is   "+ar);
+                                    
+                        for(var z =0;z<ar.length;z++){
+                       
+                        var table = document.getElementById("myTable");
+                        var row = table.insertRow(1);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+
+                        cell1.innerHTML = ar[z].info.name;
+                        cell2.innerHTML = ar[z].info.dist;
+                        cell3.innerHTML = ar[z].info.rating;
+                        cell4.innerHTML = ar[z].info.phone;
+                        cell5.innerHTML = ar[z].info.Speciality;
+
+                        }
+                        ar=[];
+
+
+
+
+
+
+                }
+              }
+            })(marker, i));}},
+        error: function (data) {
+        }
+      });
+    }
+  </script>
+
+</body>
+
+</html>
